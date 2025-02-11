@@ -1,0 +1,40 @@
+package com.premiumpack.web.entrypoint.controller;
+
+import com.premiumpack.web.domain.request.SignUpRq;
+import com.premiumpack.web.domain.response.JwtRs;
+import com.premiumpack.web.domain.response.SignUpRs;
+import com.premiumpack.web.entrypoint.service.AuthenticationService;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/api/v1/security")
+@CrossOrigin(origins = "*")
+public class SecurityController {
+
+    private final AuthenticationService authenticationService;
+    @PostMapping("/signin")
+    public ResponseEntity<JwtRs> signIn(@RequestHeader("Authorization") String auth, HttpServletResponse httpServletResponse) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        return ResponseEntity.ok(authenticationService.signIn(auth, httpServletResponse));
+    }
+
+    @PostMapping("/signup")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<SignUpRs> signUp(@RequestBody @Valid SignUpRq request) {
+        return ResponseEntity.ok(authenticationService.signUp(request));
+    }
+
+}

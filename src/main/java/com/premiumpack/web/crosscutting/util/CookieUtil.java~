@@ -1,0 +1,18 @@
+package com.premiumpack.web.crosscutting.util;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
+public class CookieUtil {
+
+    public static void createCookie(String name, String value, HttpServletResponse httpServletResponse) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setSecure(Boolean.TRUE);
+        cookie.setHttpOnly(Boolean.FALSE);
+        cookie.setMaxAge(1000 * 60 * 60 * 24 * 30);
+        cookie.setPath("/");
+        cookie.setAttribute("SameSite", "None");
+        cookie.setAttribute("crossDomain", "true");
+        httpServletResponse.addCookie(cookie);
+    }
+}
