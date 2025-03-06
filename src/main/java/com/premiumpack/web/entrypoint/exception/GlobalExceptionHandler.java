@@ -41,7 +41,7 @@ import static com.premiumpack.web.crosscutting.constants.UtilConstants.GENERAL_E
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private ErrorRs createErrorResponseException(Exception ex, HttpStatusCode status, Object data, WebRequest request) {
+    private ErrorRs createErrorResponseException(Exception ex, HttpStatusCode status, WebRequest request) {
         String uuid = UUID.randomUUID().toString();
         log.error("GlobalExceptionHandler.createErrorResponseException");
         log.error(uuid);
@@ -50,8 +50,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .code(String.format(GENERAL_ERROR_CODE,status.value()))
                 .UUID(uuid)
                 .timestamp(OffsetDateTime.now())
-                .data(data)
                 .path(path)
+                .message(ex.getMessage())
                 .build();
 
     }
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("GlobalExceptionHandler.handleClaimJwtException");
         log.error("An error occurred: {}", ex.getMessage(), ex);
         HttpStatusCode status = HttpStatusCode.valueOf(HttpStatus.FORBIDDEN.value());
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @ExceptionHandler(Exception.class)
@@ -69,117 +69,118 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("GlobalExceptionHandler.handleAllExceptions");
         log.error("An error occurred: {}", ex.getMessage(), ex);
         HttpStatusCode status = HttpStatusCode.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public final ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {
+        log.error("GlobalExceptionHandler.handleAllExceptions");
+        log.error("An error occurred: {}", ex.getMessage(), ex);
+        return new ResponseEntity<>(createErrorResponseException(ex, ex.getHttpStatus(), request), ex.getHttpStatus());
     }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleMethodArgumentNotValid");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return new ResponseEntity<>(createErrorResponseException(ex, status, errors, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleNoHandlerFoundException");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleHttpRequestMethodNotSupported");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleHttpMediaTypeNotSupported");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleHttpMediaTypeNotAcceptable");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleMissingPathVariable");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleMissingServletRequestParameter");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestPart(MissingServletRequestPartException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleMissingServletRequestPart");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleServletRequestBindingException(ServletRequestBindingException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleServletRequestBindingException");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleAsyncRequestTimeoutException(AsyncRequestTimeoutException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleAsyncRequestTimeoutException");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleErrorResponseException(ErrorResponseException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleErrorResponseException");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleConversionNotSupported(ConversionNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleConversionNotSupported");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleTypeMismatch");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleHttpMessageNotReadable");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("GlobalExceptionHandler.handleHttpMessageNotWritable");
         log.error("An error occurred: {}", ex.getMessage(), ex);
-        return new ResponseEntity<>(createErrorResponseException(ex, status, null, request), status);
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
     }
 }

@@ -2,7 +2,7 @@ package com.premiumpack.web.entrypoint.controller;
 
 import com.premiumpack.web.domain.request.SupplierRq;
 import com.premiumpack.web.domain.response.SupplierRs;
-import com.premiumpack.web.domain.response.SupplierSavedRs;
+import com.premiumpack.web.domain.response.SupplierBased;
 import com.premiumpack.web.entrypoint.service.SupplierService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +12,15 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,7 +33,7 @@ public class SupplierController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<SupplierSavedRs> addSupplier(@RequestBody @Valid SupplierRq request) {
+    public ResponseEntity<SupplierBased> addSupplier(@RequestBody @Valid SupplierRq request) {
         return ResponseEntity.ok(supplierService.addSupplier(request));
     }
 
@@ -37,6 +41,12 @@ public class SupplierController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<SupplierRs>> getSuppliers(Pageable pageable) {
         return ResponseEntity.ok(supplierService.getSuppliers(pageable));
+    }
+
+    @DeleteMapping("/{uuid}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<SupplierBased> deleteSupplier(@PathVariable UUID uuid) {
+        return ResponseEntity.ok(supplierService.deleteSupplier(uuid));
     }
 
 }

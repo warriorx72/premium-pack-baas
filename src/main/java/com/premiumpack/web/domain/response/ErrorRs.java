@@ -21,6 +21,6 @@ public class ErrorRs {
     private String UUID;
     private String path;
     private OffsetDateTime timestamp;
-    private Object data;
+    private String message;
 
 }

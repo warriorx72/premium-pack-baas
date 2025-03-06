@@ -1,14 +1,19 @@
 package com.premiumpack.web.entrypoint.service;
 
 import com.premiumpack.web.domain.request.SupplierRq;
+import com.premiumpack.web.domain.response.SupplierBased;
 import com.premiumpack.web.domain.response.SupplierRs;
-import com.premiumpack.web.domain.response.SupplierSavedRs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.UUID;
+
 public interface SupplierService {
 
-    SupplierSavedRs addSupplier(SupplierRq request);
+    SupplierBased addSupplier(SupplierRq request);
 
     Page<SupplierRs> getSuppliers(Pageable pageable);
+
+    SupplierBased deleteSupplier(UUID uuid);
+
 }
