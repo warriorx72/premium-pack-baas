@@ -1,5 +1,6 @@
 package com.premiumpack.web.domain.response;
 
+import com.premiumpack.web.domain.SupplierBased;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

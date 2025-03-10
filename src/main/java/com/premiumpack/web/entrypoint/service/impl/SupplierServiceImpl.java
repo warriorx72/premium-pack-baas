@@ -4,7 +4,8 @@ import com.premiumpack.web.crosscutting.mapper.SupplierMapper;
 import com.premiumpack.web.dataprovider.jpa.entity.SupplierEntity;
 import com.premiumpack.web.dataprovider.jpa.repository.SupplierRepository;
 import com.premiumpack.web.domain.request.SupplierRq;
-import com.premiumpack.web.domain.response.SupplierBased;
+import com.premiumpack.web.domain.SupplierBased;
+import com.premiumpack.web.domain.request.SupplierUpdateRq;
 import com.premiumpack.web.domain.response.SupplierRs;
 import com.premiumpack.web.entrypoint.exception.NotFoundException;
 import com.premiumpack.web.entrypoint.service.SupplierService;
@@ -39,4 +40,14 @@ public class SupplierServiceImpl implements SupplierService {
         supplierRepository.delete(supplierDeleted);
         return SupplierMapper.INSTANCE.toSupplierSavedRs(supplierDeleted);
     }
+
+    @Override
+    public SupplierRs updateSupplier(SupplierUpdateRq request, UUID uuid) {
+        SupplierEntity supplierEntity = supplierRepository.findByUuid(uuid).orElseThrow(() -> new NotFoundException("Supplier not found"));
+        SupplierMapper.INSTANCE.updateSupplierFromDto(request, supplierEntity);
+        supplierRepository.save(supplierEntity);
+        return SupplierMapper.INSTANCE.toSupplierRs(supplierEntity);
+    }
+
+
 }

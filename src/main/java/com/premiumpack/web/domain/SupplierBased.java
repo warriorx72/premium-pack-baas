@@ -1,4 +1,4 @@
-package com.premiumpack.web.domain.response;
+package com.premiumpack.web.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
