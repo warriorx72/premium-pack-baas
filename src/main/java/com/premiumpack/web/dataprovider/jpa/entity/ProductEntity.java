@@ -1,7 +1,5 @@
 package com.premiumpack.web.dataprovider.jpa.entity;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Types;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,8 +20,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_suppliers")
-public class SupplierEntity implements Serializable {
+@Table(name = "tb_products")
+public class ProductEntity implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "fi_id", nullable = false)
@@ -37,18 +34,16 @@ public class SupplierEntity implements Serializable {
     @Column(name = "fc_name" ,nullable = false, length = 100)
     private String name;
 
-    @Column(name = "fc_address", nullable = false, length = 255)
-    private String address;
+    @Column(name = "fc_description" ,nullable = false, length = 200)
+    private String description;
 
-    @Column(name = "fc_email", nullable = false, length = 100)
-    @Email
-    private String email;
+    @Column(name = "fc_quantity" ,nullable = false, length = 11)
+    @Min(value = 1)
+    private Integer quantity;
 
-    @Column(name = "fc_phone", nullable = false, length = 10)
-    @Min(value = 10)
-    private String phone;
 
-    @OneToMany(mappedBy = "supplier", cascade= CascadeType.ALL)
-    private List<ProductEntity> products;
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "fc_id_supplier")
+    private SupplierEntity supplier;
 
 }

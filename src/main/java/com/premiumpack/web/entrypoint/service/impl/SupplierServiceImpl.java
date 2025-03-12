@@ -3,8 +3,8 @@ package com.premiumpack.web.entrypoint.service.impl;
 import com.premiumpack.web.crosscutting.mapper.SupplierMapper;
 import com.premiumpack.web.dataprovider.jpa.entity.SupplierEntity;
 import com.premiumpack.web.dataprovider.jpa.repository.SupplierRepository;
-import com.premiumpack.web.domain.request.SupplierRq;
 import com.premiumpack.web.domain.SupplierBased;
+import com.premiumpack.web.domain.request.SupplierRq;
 import com.premiumpack.web.domain.request.SupplierUpdateRq;
 import com.premiumpack.web.domain.response.SupplierRs;
 import com.premiumpack.web.entrypoint.exception.NotFoundException;
@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -43,11 +44,11 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public SupplierRs updateSupplier(SupplierUpdateRq request, UUID uuid) {
-        SupplierEntity supplierEntity = supplierRepository.findByUuid(uuid).orElseThrow(() -> new NotFoundException("Supplier not found"));
-        SupplierMapper.INSTANCE.updateSupplierFromDto(request, supplierEntity);
-        supplierRepository.save(supplierEntity);
-        return SupplierMapper.INSTANCE.toSupplierRs(supplierEntity);
+        return null;
     }
 
-
+    @Override
+    public List<SupplierRs> getSuppliersByName(String name) {
+        return List.of();
+    }
 }

@@ -7,6 +7,7 @@ import com.premiumpack.web.domain.response.SupplierRs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface SupplierService {
@@ -18,5 +19,7 @@ public interface SupplierService {
     SupplierBased deleteSupplier(UUID uuid);
 
     SupplierRs updateSupplier(SupplierUpdateRq request, UUID uuid);
+
+    List <SupplierRs> getSuppliersByName(String name);
 
 }

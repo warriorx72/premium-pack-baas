@@ -1,7 +1,6 @@
 package com.premiumpack.web.entrypoint.controller;
 
 import com.premiumpack.web.domain.request.SupplierRq;
-import com.premiumpack.web.domain.request.SupplierUpdateRq;
 import com.premiumpack.web.domain.response.SupplierRs;
 import com.premiumpack.web.domain.SupplierBased;
 import com.premiumpack.web.entrypoint.service.SupplierService;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,12 +47,6 @@ public class SupplierController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<SupplierBased> deleteSupplier(@PathVariable UUID uuid) {
         return ResponseEntity.ok(supplierService.deleteSupplier(uuid));
-    }
-
-    @PutMapping("/{uuid}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<SupplierRs> updateSupplier(@RequestBody @Valid SupplierUpdateRq request, @PathVariable UUID uuid) {
-        return ResponseEntity.ok(supplierService.updateSupplier(request, uuid));
     }
 
 }

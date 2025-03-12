@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -59,6 +60,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ClaimJwtException.class)
     public final ResponseEntity<Object> handleClaimJwtException(ClaimJwtException ex, WebRequest request) {
         log.error("GlobalExceptionHandler.handleClaimJwtException");
+        log.error("An error occurred: {}", ex.getMessage(), ex);
+        HttpStatusCode status = HttpStatusCode.valueOf(HttpStatus.FORBIDDEN.value());
+        return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public final ResponseEntity<Object> handleAuthorizationDeniedException(AuthorizationDeniedException ex, WebRequest request) {
+        log.error("GlobalExceptionHandler.handleAuthorizationDeniedException");
         log.error("An error occurred: {}", ex.getMessage(), ex);
         HttpStatusCode status = HttpStatusCode.valueOf(HttpStatus.FORBIDDEN.value());
         return new ResponseEntity<>(createErrorResponseException(ex, status, request), status);
