@@ -44,11 +44,17 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public SupplierRs updateSupplier(SupplierUpdateRq request, UUID uuid) {
-        return null;
+        SupplierEntity supplierEntity = supplierRepository.findByUuid(uuid).orElseThrow(() -> new NotFoundException("Supplier not found"));
+        SupplierMapper.INSTANCE.updateSupplierFromDto(request, supplierEntity);
+        supplierRepository.save(supplierEntity);
+        return SupplierMapper.INSTANCE.toSupplierRs(supplierEntity);
     }
 
     @Override
     public List<SupplierRs> getSuppliersByName(String name) {
-        return List.of();
+        List<SupplierEntity> supplierEntity = supplierRepository.findByNameStartingWith(name);
+        if (supplierEntity.isEmpty()) throw new NotFoundException("Supplier not found");
+        return SupplierMapper.INSTANCE.toSuppliersRs(supplierEntity);
     }
+
 }

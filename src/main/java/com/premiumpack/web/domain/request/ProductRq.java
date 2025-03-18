@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import static com.premiumpack.web.crosscutting.constants.I18Constants.ERROR_VALID_NOTNULL;
@@ -37,6 +38,9 @@ public class ProductRq {
 
     @Min(value = 0, message = ERROR_VALID_NOTNULL)
     private Integer quantity;
+
+    @Min(value = 0, message = ERROR_VALID_NOTNULL)
+    private BigDecimal price;
 
     @NotNull(message = ERROR_VALID_NOTNULL)
     private UUID idSupplier;

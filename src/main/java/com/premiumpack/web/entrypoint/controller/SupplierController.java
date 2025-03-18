@@ -5,6 +5,7 @@ import com.premiumpack.web.domain.response.SupplierRs;
 import com.premiumpack.web.domain.SupplierBased;
 import com.premiumpack.web.entrypoint.service.SupplierService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -41,6 +44,12 @@ public class SupplierController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<SupplierRs>> getSuppliers(Pageable pageable) {
         return ResponseEntity.ok(supplierService.getSuppliers(pageable));
+    }
+
+    @GetMapping("/find")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<SupplierRs>> getSupplierByName(@RequestParam @Size(min = 3) String name) {
+        return ResponseEntity.ok(supplierService.getSuppliersByName(name));
     }
 
     @DeleteMapping("/{uuid}")

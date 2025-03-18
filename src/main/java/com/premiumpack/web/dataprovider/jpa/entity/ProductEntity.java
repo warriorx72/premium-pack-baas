@@ -1,6 +1,5 @@
 package com.premiumpack.web.dataprovider.jpa.entity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,10 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 
-import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Types;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -37,13 +35,14 @@ public class ProductEntity implements Serializable{
     @Column(name = "fc_description" ,nullable = false, length = 200)
     private String description;
 
-    @Column(name = "fc_quantity" ,nullable = false, length = 11)
-    @Min(value = 1)
+    @Column(name = "fi_quantity" ,nullable = false, length = 11)
     private Integer quantity;
 
+    @Column(name = "fi_price" ,nullable = false, length = 11)
+    private BigDecimal price;
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "fc_id_supplier")
+    @JoinColumn(name = "fi_id_supplier")
     private SupplierEntity supplier;
 
 }

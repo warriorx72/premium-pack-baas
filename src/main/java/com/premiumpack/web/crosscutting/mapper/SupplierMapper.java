@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface SupplierMapper {
     SupplierMapper INSTANCE = Mappers.getMapper(SupplierMapper.class);
@@ -20,6 +22,8 @@ public interface SupplierMapper {
     SupplierBased toSupplierSavedRs(SupplierEntity supplierEntity);
 
     SupplierRs toSupplierRs(SupplierEntity supplierEntity);
+
+    List<SupplierRs> toSuppliersRs(List<SupplierEntity> supplierEntities);
 
     void updateSupplierFromDto(SupplierUpdateRq dto, @MappingTarget SupplierEntity entity);
 }
