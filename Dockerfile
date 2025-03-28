@@ -20,7 +20,7 @@ RUN chmod +x ./gradlew
 RUN ./gradlew build --no-daemon
 
 # Use a minimal JDK image for running the application
-FROM gcr.io/distroless/java21-debian11
+FROM eclipse-temurin:21-jdk
 
 # Set the working directory
 WORKDIR /app
@@ -33,3 +33,5 @@ EXPOSE 8080
 
 # Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
