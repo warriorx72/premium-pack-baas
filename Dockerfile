@@ -20,18 +20,16 @@ RUN chmod +x ./gradlew
 RUN ./gradlew build --no-daemon
 
 # Use a minimal JDK image for running the application
-FROM eclipse-temurin:21-jdk
+FROM gcr.io/distroless/java21-debian11
 
 # Set the working directory
 WORKDIR /app
 
 # Copy the built JAR file from the builder stage
-COPY --from=builder /app/build/libs/*.jar /app.jar
+COPY --from=builder /app/build/libs/*.jar app.jar
 
 # Expose the application port
 EXPOSE 8080
 
 # Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
-
