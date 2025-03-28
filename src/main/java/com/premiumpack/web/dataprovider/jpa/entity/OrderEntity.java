@@ -36,6 +36,9 @@ public class OrderEntity implements Serializable {
     @Column(name = "fi_id", nullable = false)
     private Long id;
 
+    @Column(name = "fc_id" ,nullable = false)
+    private String idText;
+
     @Column(name = "fc_uuid" ,nullable = false)
     @JdbcTypeCode(Types.CHAR)
     private UUID uuid;

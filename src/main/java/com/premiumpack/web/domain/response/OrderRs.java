@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 public class OrderRs {
 
     private String uuid;
+    private String idText;
     private LocalDateTime date;
     private String customerName;
     private String phone;

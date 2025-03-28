@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+FROM eclipse-temurin:21
+RUN mkdir -p /app/
+ADD build/libs/web-1.0.0.jar /app/web-1.0.0.jar
+ENTRYPOINT ["java", "-jar", "/app/web-1.0.0.jar"]
